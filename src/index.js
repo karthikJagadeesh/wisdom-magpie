@@ -6,7 +6,9 @@ const T = new Twit(twitterKeys);
 // for retweeting a user's tweet
 const retweet = tweet => {
   const isOriginalTweet =
-    !tweet.hasOwnProperty("retweeted_status") && !tweet.in_reply_to_status_id;
+    !tweet.hasOwnProperty("retweeted_status") &&
+    !tweet.in_reply_to_status_id &&
+    !tweet.in_reply_to_user_id;
   if (isOriginalTweet) {
     console.log("TWEET ID: ", tweet.id_str);
     const params = {
