@@ -3,35 +3,41 @@ const twitterKeys = require("./config");
 
 const T = new Twit(twitterKeys);
 
-// const tweet = {
-//   status:
-//     "Greetings World! I'm a spiritual bot. I retweet tweets from spirtual " +
-//     "masters around the world. #wisdommagpie #spirituality #wisdom"
-// };
+// for retweeting a user's tweet
+const retweet = tweet => {
+  const isOriginalTweet =
+    !tweet.hasOwnProperty("retweeted_status") && !tweet.in_reply_to_status_id;
+  if (isOriginalTweet) {
+    console.log("TWEET ID: ", tweet.id_str);
+    const params = {
+      id: tweet.id_str
+    };
+    const tweeted = (error, data, response) => {
+      if (error) {
+        console.log(error.message);
+      } else {
+        console.log("successfully retweeted");
+      }
+    };
 
-// const tweeted = (error, data, response) => {};
-
-// T.post("statuses/update", tweet, tweeted);
-
-const retweet = (name, id) => {
-  const params = {
-    name: name,
-    id: id
-  };
-  const response = _ => {};
-  T.post("statuses/retweet", params, response);
+    T.post("statuses/retweet", params, tweeted);
+  }
 };
 
-// let params = {
-//   q: "Narendra Modi",
-//   count: 10
-// };
+//open a stream to listen to tweets tweeted by the people am following
+const listenToFriends = ids => {
+  const stream = T.stream("statuses/filter", {
+    follow: ids
+  });
 
-// const gotData = (error, data, response) => {
-//   let tweets = data.statuses;
-//   tweets.forEach(tweet => {
-//     console.log(tweet.text);
-//   });
-// };
+  stream.on("tweet", retweet);
+};
 
-// T.get("search/tweets", params, gotData);
+// get list of the user IDs am following
+const params = {
+  screen_name: "wisdommagpie"
+};
+
+const gotData = (error, data, response) => listenToFriends(data.ids);
+
+T.get("friends/ids", params, gotData);
