@@ -5,4 +5,4 @@
 ## About  
 
 Wisdom spreading twitter bot.  
-Follow the bot on @WisdomMagpie - * [Wisdom Magpie](https://twitter.com/WisdomMagpie)
+Follow the bot on @WisdomMagpie - [Wisdom Magpie](https://twitter.com/WisdomMagpie)
